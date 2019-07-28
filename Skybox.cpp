@@ -15,7 +15,7 @@ void Skybox::Init() {
 
 	
 	for (int i = 0; i < N; i++) {
-		vec3 pos = 50.0f * normalize(RNG::randomvec3() - vec3(0.5f));
+		vec3 pos = normalize(RNG::randomvec3() - vec3(0.5f));
 		bufferdata.push_back(pos[0]);
 		bufferdata.push_back(pos[1]);
 		bufferdata.push_back(pos[2]);

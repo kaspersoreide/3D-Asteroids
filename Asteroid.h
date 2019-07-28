@@ -19,6 +19,6 @@ public:
 	
 	static List<Asteroid*> asteroids;
 private:
-	static GLuint VAOlist[4];
+	static GLuint VAOlist[1];
 	GLuint VAO;
 };

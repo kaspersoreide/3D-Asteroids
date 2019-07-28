@@ -1,12 +1,12 @@
 #include "Asteroid.h"
 
-GLuint Asteroid::VAOlist[4];
+GLuint Asteroid::VAOlist[1];
 List<Asteroid*> Asteroid::asteroids;
 
 Asteroid::Asteroid(vec3 pos, float size) : Polygon(pos, size) { 
 	color = RNG::randomvec3(); 
 	setSpin(RNG::randomvec3() * 0.06f - vec3(0.03f));
-	VAO = VAOlist[RNG::randomUint() % 4];
+	VAO = VAOlist[0];
 };
 
 void Asteroid::cleanup(vec3 playerPos) {
@@ -28,10 +28,7 @@ void Asteroid::spawn(vec3 playerPos) {
 }
 
 void Asteroid::loadVertexArrays() {
-	VAOlist[0] = loadObjectNoNormals("gyroelongated.txt");
-	VAOlist[1] = loadObjectNoNormals("triaugtriprism.txt");
-	VAOlist[2] = loadObjectNoNormals("icosahedron.txt");
-	VAOlist[3] = loadObjectNoNormals("greatdodeca.txt");
+	VAOlist[0] = loadObject("asteroid1.txt");
 }
 
 void Asteroid::render() {

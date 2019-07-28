@@ -87,7 +87,7 @@ int main() {
 	glEnable(GL_DEPTH_TEST);
 	glLineWidth(2.0f);
 	glPointSize(2.0f);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
 	glfwSetKeyCallback(window, keyCallback);
@@ -114,7 +114,7 @@ int main() {
 		1.2f,
 		static_cast<float>(16) / 9,
 		0.1f,
-		1000.0f
+		100.0f
 	);
 	/*
 	mat4 View = lookAt(
