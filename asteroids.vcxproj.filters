@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{60803846-c80e-431e-83c2-9c23792a3842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{ab45daf8-a3bc-42fc-a51b-446c91c3d21f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\polygon">
+      <UniqueIdentifier>{0bf9618a-0c34-4576-8d38-2de79feba4e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="objects">
+      <UniqueIdentifier>{b4d98cf7-4613-4dd3-8e4d-d0fd2f5a7def}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\particles">
+      <UniqueIdentifier>{a5445c7f-2dff-457d-a5dd-ec46a3b7d728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\skybox">
+      <UniqueIdentifier>{ae361b0e-330c-4aa6-9751-12654dabc074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\HUD">
+      <UniqueIdentifier>{05b0b4e0-82fb-4e74-8dbe-6ad13dafb1a5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Particles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loadOBJ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loadshaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Polygon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Asteroid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="List.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Particles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loadOBJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loadshaders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Polygon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Asteroid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="matrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="polygonVert.shader">
+      <Filter>Shaders\polygon</Filter>
+    </None>
+    <None Include="polygonFrag.shader">
+      <Filter>Shaders\polygon</Filter>
+    </None>
+    <None Include="particleFrag.shader">
+      <Filter>Shaders\particles</Filter>
+    </None>
+    <None Include="particleVert.shader">
+      <Filter>Shaders\particles</Filter>
+    </None>
+    <None Include="particleTFB.shader">
+      <Filter>Shaders\particles</Filter>
+    </None>
+    <None Include="skyboxVert.shader">
+      <Filter>Shaders\skybox</Filter>
+    </None>
+    <None Include="skyboxFrag.shader">
+      <Filter>Shaders\skybox</Filter>
+    </None>
+    <None Include="ship2.txt">
+      <Filter>objects</Filter>
+    </None>
+    <None Include="HUDvert.shader">
+      <Filter>Shaders\HUD</Filter>
+    </None>
+    <None Include="HUDfrag.shader">
+      <Filter>Shaders\HUD</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="asteroid1.txt">
+      <Filter>objects</Filter>
+    </Text>
+    <Text Include="icosahedron.txt">
+      <Filter>objects</Filter>
+    </Text>
+    <Text Include="triaugtriprism.txt">
+      <Filter>objects</Filter>
+    </Text>
+    <Text Include="gyroelongated.txt">
+      <Filter>objects</Filter>
+    </Text>
+    <Text Include="ship.txt">
+      <Filter>objects</Filter>
+    </Text>
+    <Text Include="greatdodeca.txt">
+      <Filter>objects</Filter>
+    </Text>
+    <Text Include="Shrek.txt">
+      <Filter>objects</Filter>
+    </Text>
+    <Text Include="realdonkey.txt">
+      <Filter>objects</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
