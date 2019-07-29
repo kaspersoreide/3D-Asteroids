@@ -17,7 +17,7 @@ void main() {
 	//light = clamp(dot(n, vec3(-0.8, 0.2, 0.0)), 0.1, 1.0);
 	vec4 sPos = VP * Model * vec4(pos, 1.0);
 	gl_Position = sPos;
-	vec3 rNormal = (Model * vec4(normal, 0.0)).xyz;
-	float lit = clamp(dot(rNormal, pColor), 0.3, 1.0);
-	color = vec4(lit * pColor, 1.0) - 0.006 * sPos.z;//vec4(abs(pos) * pColor, 1.0);
+	vec3 rNormal = vec3(Model * vec4(normal, 0.0));
+	float lit = clamp(dot(rNormal, light), 0.3, 1.0);
+	color = vec4(lit * pColor, 1.0);// - 0.006 * sPos.z;//vec4(abs(pos) * pColor, 1.0);
 }
