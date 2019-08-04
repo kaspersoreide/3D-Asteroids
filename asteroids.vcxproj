@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="Debris.h" />
+    <ClInclude Include="framebuffer.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="List.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -36,6 +38,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="Debris.cpp" />
+    <ClCompile Include="framebuffer.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="loadOBJ.cpp" />
     <ClCompile Include="loadshaders.cpp" />
@@ -55,6 +59,8 @@
     <None Include="particleVert.shader" />
     <None Include="particleTFB.shader" />
     <None Include="polygonVert.shader" />
+    <None Include="screenFrag.shader" />
+    <None Include="screenVert.shader" />
     <None Include="ship2.txt" />
     <None Include="skyboxFrag.shader" />
     <None Include="skyboxVert.shader" />
@@ -67,6 +73,7 @@
     <Text Include="realdonkey.txt" />
     <Text Include="ship.txt" />
     <Text Include="Shrek.txt" />
+    <Text Include="tetrahedron.txt" />
     <Text Include="triaugtriprism.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

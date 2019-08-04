@@ -15,6 +15,7 @@
 #include "Player.h"
 #include "Skybox.h"
 #include "List.h"
+#include "framebuffer.h"
 
 GLFWwindow* window;
 Player player;
@@ -79,7 +80,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 
 int main() {
 	glfwInit();
-	window = glfwCreateWindow(1280, 720, "3D Asteroids", NULL, NULL);
+	window = glfwCreateWindow(1280, 720, "3D Asteroids", glfwGetPrimaryMonitor(), NULL);
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
 	glewExperimental = true; // Needed for core profile
@@ -98,7 +99,15 @@ int main() {
 	Polygon::loadProgram();
 	Player::loadVertexArray();
 	Asteroid::loadVertexArrays();
+	Debris::loadVertexArrays();
 
+	GLuint screenTexture = makeFramebufferTexture();
+	GLuint screenDepthBuffer = makeDepthBuffer();
+	GLuint screenFBO = makeFrameBuffer(screenTexture, screenDepthBuffer);
+	GLuint screenQuadVAO = makeScreenQuadVAO();
+	GLuint screenProgram = loadShaders("screenVert.shader", "screenFrag.shader");
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	/*
 	for (int i = 0; i < 15; i++) {
 		Asteroid::asteroids.push_back(new Asteroid(
@@ -128,12 +137,16 @@ int main() {
 	Polygon::setViewProjection(Projection * player.getView());
 
 	while (!glfwWindowShouldClose(window)) {
+		glBindFramebuffer(GL_FRAMEBUFFER, screenFBO);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 		mat4 VP = Projection * player.getView();
 		Polygon::setViewProjection(VP);
+		Polygon::setCameraPosition(player.getPos());
 		ParticleCluster::setViewProjection(VP);
 		Skybox::setViewProjection(player.getRotation(), Projection);
 		Asteroid::spawn(player.getPos());
+		
 		Skybox::render();
 		for (auto it = Asteroid::asteroids.begin(); it != nullptr; it = it->next) {
 			Asteroid* a1 = it->data;
@@ -151,6 +164,11 @@ int main() {
 			a1->render();
 			a1->cleanup(player.getPos());
 		}
+		for (auto it = Debris::debris.begin(); it != nullptr; it = it->next) {
+			Debris* d = it->data;
+			d->move();
+			d->render();
+		}
 		for (auto it = ParticleCluster::particles.begin(); it != nullptr; it = it->next) {
 			ParticleCluster *p = it->data;
 			p->doStuff();
@@ -158,6 +176,12 @@ int main() {
 		//particles.doStuff();
 		player.move();
 		//player.render();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glDisable(GL_DEPTH_TEST);
+		renderTextureToScreen(screenQuadVAO, screenProgram, screenTexture);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

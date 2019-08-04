@@ -74,7 +74,7 @@ void main() {
 		outPos2 = inPos2 + inColor2;
 		//outPos2 = inPos2 + inColor2 + 0.001 * vec3(inPos2.y, -inPos2.x, 0.0);
 		vec3 d = inPos2 - origin;
-		outColor2 = inColor2 + d * 0.4 / dot(d, d);// + 0.00001 * cross(inPos2, vec3(0.0, 1.0, 0.0));
+		outColor2 = inColor2 + d * 0.1 / dot(d, d);// + 0.00001 * cross(inPos2, vec3(0.0, 1.0, 0.0));
 		outColor1 = inColor1;
 	}
 }

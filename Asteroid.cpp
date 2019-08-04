@@ -28,7 +28,7 @@ void Asteroid::spawn(vec3 playerPos) {
 }
 
 void Asteroid::loadVertexArrays() {
-	VAOlist[0] = loadObject("asteroid1.txt");
+	VAOlist[0] = loadObjectNormalized("icosahedron.txt");
 }
 
 void Asteroid::render() {
@@ -41,33 +41,56 @@ void Asteroid::move() {
 }
 
 void Asteroid::explode() {
-	vec3 p1 = normalize(RNG::randomvec3()) * (0.8f * size);
+	//vec3 p1 = normalize(RNG::randomvec3()) * (0.8f * size);
+	Debris* d[20];
+	const vec3 dirs[3] = {
+		normalize(vec3(-0.5, 0.0, -0.353553) + vec3(0.5, 0.0, -0.353553)),
+		normalize(vec3(0.0, 0.5, 0.353553) + vec3(0.5, 0.0, -0.353553)),
+		normalize(vec3(0.0, -0.5, 0.353553) + vec3(0.5, 0.0, -0.353553))
+	};
+	mat3 initialRotation = srotate(0.5235987f * vec3(0.0, 1.0, 0.0));
+	mat3 debrisRotation = initialRotation;
+	const vec3 p = 0.5f * normalize(vec3(0.5, 0.0, -0.353553));
+	mat4 debrisModel = translateR(
+		mat3(0.5f) * initialRotation,
+		p);
 
-	Asteroid* a1 = new Asteroid(pos + p1, size / 2);
-	a1->setVel(vel + cross(spin, p1) + 0.2f * normalize(p1));
-	a1->color = color;
-
-	Asteroid* a2 = new Asteroid(pos - p1, size / 2);
-	a2->setVel(vel + cross(spin, -p1) - 0.2f * normalize(p1));
-	a2->color = color;
+	for (int i = 0; i < 20; i++) {
+		vec3 relPos = debrisModel * vec4(0.0, 0.0, 0.0, 1.0);
+		d[i] = new Debris(Model * debrisModel, vec3(0.0f), pos + relPos, size / 2, color);
+		d[i]->setRotation(debrisRotation);
+		Debris::debris.push_back(d[i]);
+		int way = (i % 2 == 0) ? 1 : -1;
+		const float fifth = 1.256637f;
+		debrisRotation *= srotate(way * fifth * debrisRotation * dirs[i % 3]);
+		debrisModel = translateR(mat3(0.5) * debrisRotation, debrisRotation * p);
+	}
+	//Debris* d1 = new Debris(Model, vel, pos + p1, size / 2, color);
+	//Debris* d2 = new Debris(Model, vel, pos - p1, size / 2, color);
 
 	ParticleCluster::particles.push_back(
 		new ParticleCluster((int)(size * 50), pos, color, size)
 	);
 	asteroids -= this;
-	asteroids.push_back(a1);
-	asteroids.push_back(a2);
+	//Debris::debris.push_back(d1);
+	//Debris::debris.push_back(d2);
 }
 
 void Asteroid::collide(Asteroid& p) {
 	if (Polygon::collide(p)) {
-		if (size > p.size) {
+		/*if (size > p.size) {
 			explode();
 			asteroids -= &p;
 		}
 		else {
 			p.explode();
 			asteroids -= this;
+		}*/
+		if (size > p.size) {
+			explode();
+		}
+		else {
+			p.explode();
 		}
 	}
 }

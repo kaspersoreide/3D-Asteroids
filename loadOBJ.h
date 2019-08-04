@@ -11,4 +11,6 @@ using namespace std;
 
 GLuint loadObject(string path);
 
+GLuint loadObjectNormalized(string path);
+
 GLuint loadObjectNoNormals(string path);

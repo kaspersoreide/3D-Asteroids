@@ -1,5 +1,6 @@
 #pragma once
 #include "Polygon.h"
+#include "Debris.h"
 #include "Random.h"
 #include "Particles.h"
 #include "List.h"

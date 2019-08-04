@@ -87,6 +87,12 @@ void Polygon::setViewProjection(mat4 VP) {
 	glUniformMatrix4fv(l_M, 1, GL_FALSE, &VP[0][0]);
 }
 
+void Polygon::setCameraPosition(vec3 p) {
+	glUseProgram(program);
+	GLuint l_p = glGetUniformLocation(program, "cPos");
+	glUniform3fv(l_p, 1, &p[0]);
+}
+
 void Polygon::setSpin(vec3 _spin) {
 	spin = _spin;
 	Spin = srotate(_spin);

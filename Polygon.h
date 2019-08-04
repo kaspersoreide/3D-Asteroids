@@ -21,7 +21,9 @@ public:
 	vec3 getPos() { return pos; }
 	mat4 getModel() { return Model; }
 	mat3 getRotation() { return Rotation; }
+	void setRotation(mat3 R) { Rotation = R; }
 	static void setViewProjection(mat4 VP);
+	static void setCameraPosition(vec3 p);
 protected:
 	//all polygons share VAO, but not VBO
 	//REMEMBER: buffer has to be loaded before attrib pointer
