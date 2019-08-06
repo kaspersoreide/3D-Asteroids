@@ -53,6 +53,7 @@ void Skybox::Init() {
 
 void Skybox::render() {
 	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glUseProgram(program);
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_POINTS, 0, N);
 }

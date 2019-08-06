@@ -10,7 +10,7 @@ void ParticleCluster::loadPrograms() {
 		"particleVert.shader",
 		"particleFrag.shader"
 	);
-	const GLchar* varyings[] = { "outPos1", "outColor1", "outPos2", "outColor2" };
+	const GLchar* varyings[] = { "outPos1", "outVel1", "outPos2", "outVel2" };
 	transformProgram = loadTFBShader(
 		"particleTFB.shader",
 		varyings,

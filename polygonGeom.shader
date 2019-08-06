@@ -17,6 +17,7 @@ out Data{
 uniform bool alive;
 uniform float t;
 uniform mat4 VP;
+uniform mat4 Model;
 uniform vec3 spin;
 
 void main() {
@@ -31,50 +32,26 @@ void main() {
 		EndPrimitive();
 	}
 	else {
+		vec3 actualSpin = spin;//vec3(Model * vec4(spin, 0.0));
 		vout.vNormal = vin[0].vNormal;
 		vout.center = vin[0].center;
-		vec4 transformedNormal = VP * vec4(t * (vin[0].vNormal + cross(spin, 40.0 * vin[0].vNormal)), 0.0);
-		vec3 extraVertex = vin[0].center;// 0.33333 * (vin[0].rPos + vin[1].rPos + vin[2].rPos)
-			//- 5.5f * vin[0].vNormal;
+		vec4 transformedNormal = VP * vec4(t * (3.0 * vin[0].vNormal + cross(vin[0].vNormal, 100.0 * actualSpin)), 0.0);
+		vec3 extraVertex = vin[0].center;
 		for (int i = 0; i < 3; i++) {
-			vout.rPos = vin[i].rPos;
+			vout.rPos = vin[i].rPos + transformedNormal.xyz;
 			gl_Position = gl_in[i].gl_Position + transformedNormal;
 			EmitVertex();
 		}
-		vout.rPos = extraVertex;
+		vout.rPos = extraVertex + transformedNormal.xyz;
 		vout.vNormal = vin[0].vNormal;
 		gl_Position = transformedNormal + VP * vec4(extraVertex, 1.0);
 		EmitVertex();
 		vout.vNormal = vin[0].vNormal;
 		for (int i = 0; i < 2; i++) {
-			vout.rPos = vin[i].rPos;
+			vout.rPos = vin[i].rPos + transformedNormal.xyz;
 			gl_Position = gl_in[i].gl_Position + transformedNormal;
 			EmitVertex();
 		}
 		EndPrimitive();
 	}
-	//vec3 p[3] = {
-	//	gl_in[0].gl_Position.xyz,
-	//	gl_in[1].gl_Position.xyz,
-	//	gl_in[2].gl_Position.xyz
-	//};
-	//
-	//gl_Position = gl_in[0].gl_Position;
-	//EmitVertex();
-	//
-	//gl_Position = gl_in[1].gl_Position;
-	//EmitVertex();
-	//
-	//gl_Position = gl_in[2].gl_Position;
-	//EmitVertex();
-	//
-	//gl_Position = vec4(0.33333f * (p[0] + p[1] + p[2]) + cross(p[1] - p[0], p[2] - p[0]), 1.0);
-	//EmitVertex();
-	//
-	//gl_Position = gl_in[0].gl_Position;
-	//EmitVertex();
-	//
-	//gl_Position = gl_in[1].gl_Position;
-	//EmitVertex();
-	//
 }

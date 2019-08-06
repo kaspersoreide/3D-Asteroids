@@ -9,6 +9,7 @@ void Polygon::loadProgram() {
 }
 
 Polygon::Polygon(vec3 _pos, float _size) {
+	HP = (int)(20 * _size);
 	pos = _pos;
 	size = _size;
 	Scale = mat4(
@@ -29,8 +30,12 @@ void Polygon::move() {
 	Model = translateR(Rotation, pos) * Scale;
 }
 
-bool Polygon::collide(Polygon& p) {
-	if (length(pos - p.pos) > size + p.size) return false;
+bool Polygon::detectCollision(Polygon& p) {
+	return (length(pos - p.pos) < size + p.size);
+}
+
+void Polygon::collide(Polygon& p) {
+	if (!detectCollision(p)) return;
 	pos -= vel;
 	p.pos -= p.vel;
 
@@ -40,7 +45,7 @@ bool Polygon::collide(Polygon& p) {
 	vec3 totalVelThis = vel + cross(spin, r1);
 	vec3 totalVelThat = p.vel + cross(p.spin, r2);
 	vec3 dv = totalVelThat - totalVelThis;
-	if (dot(r1, dv) > 0) return false;
+	if (dot(r1, dv) > 0) return;
 
 	float m1 = 2 * p.size / (size + p.size);
 	float m2 = 2 * size / (size + p.size);
@@ -56,7 +61,6 @@ bool Polygon::collide(Polygon& p) {
 	setSpin(cross(tangentThis, r1) / dot(r1, r1));
 	vec3 tangentThat = totalVelThat - p.vel;
 	p.setSpin(cross(tangentThat, r2) / dot(r2, r2));
-	return true;
 }
 
 void Polygon::gravitate(Polygon& p) {

@@ -29,6 +29,9 @@
     <Filter Include="Shaders\screen">
       <UniqueIdentifier>{063e7d49-bd2f-4c8d-a59f-d929c70040a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\shooter">
+      <UniqueIdentifier>{60ca9313-7ed4-4c57-93d9-894e5040d7c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Particles.h">
@@ -67,6 +70,9 @@
     <ClInclude Include="framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shooter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Particles.cpp">
@@ -103,6 +109,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shooter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -145,6 +154,15 @@
     </None>
     <None Include="polygonGeom.shader">
       <Filter>Shaders\polygon</Filter>
+    </None>
+    <None Include="shotVert.shader">
+      <Filter>Shaders\shooter</Filter>
+    </None>
+    <None Include="shotFrag.shader">
+      <Filter>Shaders\shooter</Filter>
+    </None>
+    <None Include="shotGeom.shader">
+      <Filter>Shaders\shooter</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -29,7 +29,7 @@ void Asteroid::spawn(vec3 playerPos) {
 }
 
 void Asteroid::loadVertexArrays() {
-	VAO = loadObjectNormalized("icosahedron.txt");
+	VAO = loadObjectNormalized("asteroid1.txt");
 }
 
 void Asteroid::render() {
@@ -48,11 +48,13 @@ void Asteroid::render() {
 		GLuint l_s = glGetUniformLocation(program, "spin");
 		glUniform3fv(l_s, 1, &spin[0]);
 	}
-	glDrawArrays(GL_TRIANGLES, 0, 60);
+	//glDrawArrays(GL_TRIANGLES, 0, 60);
+	glDrawArrays(GL_TRIANGLES, 0, 3 * 80);
 }
 
 void Asteroid::move() {
 	//vel -= 0.001f * pos / dot(pos, pos);
+	if (HP < 0 && alive) explode();
 	Polygon::move();
 	if (!alive) {
 		timeDead += 0.1;
@@ -62,6 +64,7 @@ void Asteroid::move() {
 
 void Asteroid::explode() {
 	alive = false;
+	//vel = vec3(0.0f);
 	Spin = mat3(1.0);
 	ParticleCluster::particles.push_back(
 		new ParticleCluster(400, pos, color, size)
@@ -69,7 +72,7 @@ void Asteroid::explode() {
 }
 
 void Asteroid::collide(Asteroid& p) {
-	if (Polygon::collide(p)) {
+	if (detectCollision(p)) {
 		/*if (size > p.size) {
 			explode();
 			asteroids -= &p;
@@ -78,11 +81,16 @@ void Asteroid::collide(Asteroid& p) {
 			p.explode();
 			asteroids -= this;
 		}*/
-		if (size > p.size) {
-			explode();
+		if (length(vel - p.vel) > 1.0f) {
+			if (size > p.size) {
+				explode();
+			}
+			else {
+				p.explode();
+			}
 		}
 		else {
-			p.explode();
+			Polygon::collide(p);
 		}
 	}
 }

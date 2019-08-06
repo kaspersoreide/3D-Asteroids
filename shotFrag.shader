@@ -1,17 +1,8 @@
 #version 330 core
 
-layout(location = 0) in vec3 inPos1;
-layout(location = 1) in vec3 inVel1;
-layout(location = 2) in vec3 inPos2;
-layout(location = 3) in vec3 inVel2;
+in vec3 p;
 
-out vec3 outPos1;
-out vec3 outVel1;
-out vec3 outPos2;
-out vec3 outVel2;
-
-uniform vec3 origin;
-uniform float radius;
+out vec4 FragColor;
 
 // A single iteration of Bob Jenkins' One-At-A-Time hashing algorithm.
 uint hash(uint x) {
@@ -48,33 +39,5 @@ float random(vec3  v) { return floatConstruct(hash(floatBitsToUint(v))); }
 float random(vec4  v) { return floatConstruct(hash(floatBitsToUint(v))); }
 
 void main() {
-	if (length(inPos2) < 0.1) {
-		vec3 pos = vec3(
-			random(inVel2.x),
-			random(inVel2.x + 0.1),
-			random(inVel2.x + 0.2)
-		) - 0.5;
-		outVel2 = 0.4 * pos;
-		pos = origin + random(pos) * radius * normalize(pos);
-		outPos1 = outPos2 = pos;
-		outVel1 = vec3(0.0);
-	}
-	else {
-		/*outPos = inPos + 0.009 * vec3(
-		inPos.y * inPos.z,
-		-inPos.x * inPos.z,
-		inPos.x * inPos.y
-		);*/
-		outPos1 = inPos2;
-		/*outPos2 = inPos2 + 0.004 * vec3(
-			10.0 * (inPos2.y - inPos2.x),
-			inPos2.x * (28.0 - inPos2.z) - inPos2.y,
-			inPos2.x * inPos2.y - 8.0 * inPos2.z / 3.0
-		);*/
-		outPos2 = inPos2 + inVel2;
-		//outPos2 = inPos2 + inColor2 + 0.001 * vec3(inPos2.y, -inPos2.x, 0.0);
-		vec3 d = inPos2 - origin;
-		outVel2 = inVel2 + d * 0.1 / length(d);// + 0.00001 * cross(inPos2, vec3(0.0, 1.0, 0.0));
-		outVel1 = inVel1;
-	}
+	FragColor = vec4(random(p.x), random(p.y), random(p.z), 1.0);
 }

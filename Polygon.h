@@ -16,12 +16,15 @@ public:
 	void move();
 	void setSpin(vec3 _spin);
 	void setVel(vec3 _vel) { vel = _vel; }
-	bool collide(Polygon& p);
+	bool detectCollision(Polygon& p);
+	void collide(Polygon& p);
 	void gravitate(Polygon& p);
 	vec3 getPos() { return pos; }
 	mat4 getModel() { return Model; }
 	mat3 getRotation() { return Rotation; }
+	void decrementHP(int amount) { HP -= amount; }
 	void setRotation(mat3 R) { Rotation = R; }
+	float getSize() { return size; }
 	static void setViewProjection(mat4 VP);
 	static void setCameraPosition(vec3 p);
 protected:
@@ -29,6 +32,7 @@ protected:
 	//REMEMBER: buffer has to be loaded before attrib pointer
 	//idk why
 	static GLuint program;
+	int HP;
 	vec3 pos = vec3(0.0);
 	vec3 spin = vec3(0.0);
 	vec3 vel = vec3(0.0);

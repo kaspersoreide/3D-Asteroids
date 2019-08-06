@@ -33,6 +33,7 @@
     <ClInclude Include="Polygon.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="matrix.h" />
+    <ClInclude Include="Shooter.h" />
     <ClInclude Include="Skybox.h" />
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +48,7 @@
     <ClCompile Include="Polygon.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="matrix.cpp" />
+    <ClCompile Include="Shooter.cpp" />
     <ClCompile Include="Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +63,9 @@
     <None Include="screenFrag.shader" />
     <None Include="screenVert.shader" />
     <None Include="ship2.txt" />
+    <None Include="shotFrag.shader" />
+    <None Include="shotGeom.shader" />
+    <None Include="shotVert.shader" />
     <None Include="skyboxFrag.shader" />
     <None Include="skyboxVert.shader" />
   </ItemGroup>

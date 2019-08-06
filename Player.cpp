@@ -2,15 +2,17 @@
 GLuint Player::VAO;
 
 void Player::loadVertexArray() {
-	VAO = loadObjectNoNormals("ship2.txt");
+	VAO = loadObjectNormalized("tetrahedron.txt");
 }
 
 Player::Player() : Polygon(vec3(0.0f), 1.0f) {
 	color = vec3(0.0, 1.0, 0.4);
+	shooter = new Shooter();
 }
 
 void Player::render() {
-	Polygon::render(VAO);
+	shooter->render();
+	//Polygon::render(VAO);
 }
 
 void Player::move() {
@@ -33,14 +35,18 @@ void Player::move() {
 	if (mov[3]) vel += movAmount * right;
 	if (mov[4]) vel += movAmount * up;
 	if (mov[5]) vel -= movAmount * up;
-
+	/*
 	if (dot(pos, pos) > 1000.0f) {
 		vel -= 0.00002f * pos;
 	}
-
+	*/
 	vel *= 0.99f;
 	spin *= 0.99f;
 	setSpin(spin + dSpin);
+	shooter->setPosAndDir(pos, -forward);
+	shooter->moveShots();
+	shooter->setVel(vel);
+	if (shooting) shoot();
 	Polygon::move();
 }
 
@@ -50,10 +56,6 @@ mat4 Player::getView() {
 	return inverse(Model);
 }
 
-Asteroid* Player::shoot() {
-	vec3 forward = Rotation * vec3(0.0, 0.0, -1.0);
-	Asteroid* theAsteroid = new Asteroid(pos + 1.26f * forward, 0.25f);
-	theAsteroid->setVel(vel + 1.5f * forward);
-	theAsteroid->setSpin(0.01f * forward);
-	return theAsteroid;
+void Player::shoot() {
+	shooter->shoot();
 }
