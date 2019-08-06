@@ -42,8 +42,12 @@ void Asteroid::render() {
 	glUniform3fv(l_c, 1, &color[0]);
 	GLuint l_a = glGetUniformLocation(program, "alive");
 	glUniform1i(l_a, alive);
-	GLuint l_t = glGetUniformLocation(program, "t");
-	glUniform1f(l_t, timeDead);
+	if (!alive) {
+		GLuint l_t = glGetUniformLocation(program, "t");
+		glUniform1f(l_t, timeDead);
+		GLuint l_s = glGetUniformLocation(program, "spin");
+		glUniform3fv(l_s, 1, &spin[0]);
+	}
 	glDrawArrays(GL_TRIANGLES, 0, 60);
 }
 
@@ -51,14 +55,16 @@ void Asteroid::move() {
 	//vel -= 0.001f * pos / dot(pos, pos);
 	Polygon::move();
 	if (!alive) {
-		timeDead += length(spin) * 3.0f;
+		timeDead += 0.1;
+		if (timeDead > 20.0) asteroids -= this;
 	}
 }
 
 void Asteroid::explode() {
 	alive = false;
+	Spin = mat3(1.0);
 	ParticleCluster::particles.push_back(
-		new ParticleCluster((int)(size * 50), pos, color, size)
+		new ParticleCluster(400, pos, color, size)
 	);
 }
 

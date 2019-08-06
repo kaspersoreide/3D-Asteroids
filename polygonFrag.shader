@@ -7,6 +7,8 @@ in Data{
 };
 out vec4 FragColor;
 
+uniform bool alive;
+uniform float t;
 uniform vec3 pColor;
 uniform vec3 cPos;
 uniform mat4 VP;
@@ -19,6 +21,12 @@ void main() {
 	vec3 reflectDir = reflect(lightDir, vNormal);
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 4);
 	vec3 specular = spec * pColor;
-	FragColor = vec4(specular, 1.0);
+	if (alive) {
+		FragColor = vec4(specular, 1.0);
+	}
+	else {
+		FragColor = (1.0 - 0.05 * t) * vec4(specular, 1.0);
+	}
+	
 	//FragColor = vec4(1.0);
 }

@@ -17,6 +17,7 @@ out Data{
 uniform bool alive;
 uniform float t;
 uniform mat4 VP;
+uniform vec3 spin;
 
 void main() {
 	if (alive) {
@@ -32,9 +33,9 @@ void main() {
 	else {
 		vout.vNormal = vin[0].vNormal;
 		vout.center = vin[0].center;
-		vec4 transformedNormal = VP * vec4(t * vin[0].vNormal, 0.0);
-		vec3 extraVertex = 0.33333 * (vin[0].rPos + vin[1].rPos + vin[2].rPos)
-			- 5.5f * vin[0].vNormal;
+		vec4 transformedNormal = VP * vec4(t * (vin[0].vNormal + cross(spin, 40.0 * vin[0].vNormal)), 0.0);
+		vec3 extraVertex = vin[0].center;// 0.33333 * (vin[0].rPos + vin[1].rPos + vin[2].rPos)
+			//- 5.5f * vin[0].vNormal;
 		for (int i = 0; i < 3; i++) {
 			vout.rPos = vin[i].rPos;
 			gl_Position = gl_in[i].gl_Position + transformedNormal;
