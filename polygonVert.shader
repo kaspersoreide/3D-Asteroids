@@ -8,10 +8,11 @@ uniform mat4 VP;
 uniform vec3 cPos;
 uniform vec3 pColor;
 
-out vec3 vNormal;
-out vec3 rPos;
-out vec3 center;
-
+out Data {
+	vec3 vNormal;
+	vec3 rPos;
+	vec3 center;
+};
 //const vec3 light = vec3(1.0, 0.0, 0.0);
 
 void main() {

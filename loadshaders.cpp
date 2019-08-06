@@ -79,3 +79,63 @@ GLuint loadTFBShader(const char* vertex, const GLchar** varyings, int numVarying
 
 	return program;
 }
+
+GLuint loadGeometryShader(const char* vertex, const char* geo, const char* frag) {
+	GLuint vshader = glCreateShader(GL_VERTEX_SHADER);
+	GLuint gshader = glCreateShader(GL_GEOMETRY_SHADER);
+	GLuint fshader = glCreateShader(GL_FRAGMENT_SHADER);
+	GLuint program = glCreateProgram();
+	//Create shaders and shader program
+	{
+		std::ifstream source_file(vertex);
+
+		std::string data;
+		std::getline(source_file, data, '\0');
+
+		const GLchar* vshader_source(data.c_str());
+
+		glShaderSource(vshader, 1, &vshader_source, NULL);
+	}
+	{
+		std::ifstream source_file(geo);
+
+		std::string data;
+		std::getline(source_file, data, '\0');
+
+		const GLchar* gshader_source(data.c_str());
+
+		glShaderSource(gshader, 1, &gshader_source, NULL);
+	}
+	{
+		std::ifstream source_file(frag);
+
+		std::string data;
+		std::getline(source_file, data, '\0');
+
+		const GLchar *fshader_source(data.c_str());
+
+		glShaderSource(fshader, 1, &fshader_source, NULL);
+	}
+
+	glCompileShader(vshader);
+	glCompileShader(gshader);
+	glCompileShader(fshader);
+
+	glAttachShader(program, vshader);
+	glAttachShader(program, gshader);
+	glAttachShader(program, fshader);
+
+	glLinkProgram(program);
+
+	glDeleteShader(vshader);
+	glDeleteShader(gshader);
+	glDeleteShader(fshader);
+
+	int error = glGetError();
+
+	if (error != GL_NO_ERROR) {
+		std::cout << "OpenGL error: " << error << "\n";
+	}
+
+	return program;
+}

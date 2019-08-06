@@ -67,9 +67,6 @@
     <ClInclude Include="framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Debris.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Particles.cpp">
@@ -106,9 +103,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="framebuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Debris.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -148,6 +142,9 @@
     </None>
     <None Include="screenFrag.shader">
       <Filter>Shaders\screen</Filter>
+    </None>
+    <None Include="polygonGeom.shader">
+      <Filter>Shaders\polygon</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -80,7 +80,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 
 int main() {
 	glfwInit();
-	window = glfwCreateWindow(1280, 720, "3D Asteroids", glfwGetPrimaryMonitor(), NULL);
+	window = glfwCreateWindow(1280, 720, "3D Asteroids", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
 	glewExperimental = true; // Needed for core profile
@@ -99,7 +99,6 @@ int main() {
 	Polygon::loadProgram();
 	Player::loadVertexArray();
 	Asteroid::loadVertexArrays();
-	Debris::loadVertexArrays();
 
 	GLuint screenTexture = makeFramebufferTexture();
 	GLuint screenDepthBuffer = makeDepthBuffer();
@@ -135,7 +134,7 @@ int main() {
 	Polygon::setViewProjection(VP);
 	*/
 	Polygon::setViewProjection(Projection * player.getView());
-
+	//Asteroid::asteroids.push_back(new Asteroid(vec3(0.0, 0.0, 7.0), 5.0f));
 	while (!glfwWindowShouldClose(window)) {
 		glBindFramebuffer(GL_FRAMEBUFFER, screenFBO);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -152,22 +151,20 @@ int main() {
 			Asteroid* a1 = it->data;
 			//inner loop is a bit complicated,
 			//because colliding it with jt is the same as jt with it 
-			for (auto jt = it->next; jt != nullptr; jt = jt->next) {
-				Asteroid* a2 = jt->data;
-				//it->gravitate(**jt);
-				a2->collide(*a1);
-				if (Asteroid::asteroids.find(a1) == nullptr) break;
+			if (a1->isAlive()) {
+				for (auto jt = it->next; jt != nullptr; jt = jt->next) {
+					Asteroid* a2 = jt->data;
+					if (!a2->isAlive()) continue;
+					//it->gravitate(**jt);
+					a2->collide(*a1);
+					if (Asteroid::asteroids.find(a1) == nullptr) break;
+				}
+				//it->gravitate(player);
+				a1->collide(player);
 			}
-			//it->gravitate(player);
-			a1->collide(player);
 			a1->move();
 			a1->render();
 			a1->cleanup(player.getPos());
-		}
-		for (auto it = Debris::debris.begin(); it != nullptr; it = it->next) {
-			Debris* d = it->data;
-			d->move();
-			d->render();
 		}
 		for (auto it = ParticleCluster::particles.begin(); it != nullptr; it = it->next) {
 			ParticleCluster *p = it->data;

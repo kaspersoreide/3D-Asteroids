@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
-    <ClInclude Include="Debris.h" />
     <ClInclude Include="framebuffer.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="List.h">
@@ -38,7 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Asteroid.cpp" />
-    <ClCompile Include="Debris.cpp" />
     <ClCompile Include="framebuffer.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="loadOBJ.cpp" />
@@ -58,6 +56,7 @@
     <None Include="particleFrag.shader" />
     <None Include="particleVert.shader" />
     <None Include="particleTFB.shader" />
+    <None Include="polygonGeom.shader" />
     <None Include="polygonVert.shader" />
     <None Include="screenFrag.shader" />
     <None Include="screenVert.shader" />

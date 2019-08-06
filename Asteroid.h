@@ -1,6 +1,5 @@
 #pragma once
 #include "Polygon.h"
-#include "Debris.h"
 #include "Random.h"
 #include "Particles.h"
 #include "List.h"
@@ -17,9 +16,10 @@ public:
 	void explode();
 	void collide(Polygon& p) { Polygon::collide(p); }
 	void collide(Asteroid& p);
-	
+	bool isAlive() { return alive; }
 	static List<Asteroid*> asteroids;
 private:
-	static GLuint VAOlist[1];
-	GLuint VAO;
+	bool alive;
+	float timeDead;
+	static GLuint VAO;
 };

@@ -3,7 +3,9 @@
 GLuint Polygon::program;
 
 void Polygon::loadProgram() {
-	program = loadShaders("polygonVert.shader", "polygonFrag.shader");
+	//program = loadShaders("polygonVert.shader", "polygonFrag.shader");
+	program = loadGeometryShader("polygonVert.shader", "polygonGeom.shader", "polygonFrag.shader");
+	//program = loadGeometryShader("polygonVert.shader", "polygonGeom.shader", "polygonFrag.shader");
 }
 
 Polygon::Polygon(vec3 _pos, float _size) {
@@ -77,8 +79,8 @@ void Polygon::render(GLuint VAO) {
 	GLint size = 0;
 	//this gets size in bytes
 	glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
-	//3 float attributes per vertex
-	glDrawArrays(GL_TRIANGLES, 0, size / (3 * sizeof(float)));
+	//6 float attributes per vertex
+	glDrawArrays(GL_TRIANGLES, 0, size / (6 * sizeof(float)));
 }
 
 void Polygon::setViewProjection(mat4 VP) {
