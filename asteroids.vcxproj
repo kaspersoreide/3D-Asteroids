@@ -52,6 +52,8 @@
     <ClCompile Include="Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="glowFrag.shader" />
+    <None Include="glowVert.shader" />
     <None Include="HUDfrag.shader" />
     <None Include="HUDvert.shader" />
     <None Include="polygonFrag.shader" />

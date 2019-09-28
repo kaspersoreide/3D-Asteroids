@@ -55,7 +55,9 @@ void Skybox::render() {
 	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glUseProgram(program);
 	glBindVertexArray(VAO);
+	glDisable(GL_DEPTH_TEST);
 	glDrawArrays(GL_POINTS, 0, N);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Skybox::setViewProjection(mat3 Rotation, mat4 Projection) {

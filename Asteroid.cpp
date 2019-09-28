@@ -1,6 +1,7 @@
 #include "Asteroid.h"
+#include <vector>
 
-GLuint Asteroid::VAO;
+GLuint Asteroid::VAO, Asteroid::glowProgram, Asteroid::glowVAO;
 List<Asteroid*> Asteroid::asteroids;
 
 Asteroid::Asteroid(vec3 pos, float size) : Polygon(pos, size) { 
@@ -29,7 +30,7 @@ void Asteroid::spawn(vec3 playerPos) {
 }
 
 void Asteroid::loadVertexArrays() {
-	VAO = loadObjectNormalized("asteroid1.txt");
+	VAO = loadObjectNormalized("icosahedron.txt");
 }
 
 void Asteroid::render() {
@@ -49,7 +50,14 @@ void Asteroid::render() {
 		glUniform3fv(l_s, 1, &spin[0]);
 	}
 	//glDrawArrays(GL_TRIANGLES, 0, 60);
-	glDrawArrays(GL_TRIANGLES, 0, 3 * 80);
+	GLuint l_o = glGetUniformLocation(program, "outline");
+	glUniform1i(l_o, true);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glLineWidth(2.0f);
+	glDrawArrays(GL_TRIANGLES, 0, 60);
+	glUniform1i(l_o, false);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glDrawArrays(GL_TRIANGLES, 0, 60);
 }
 
 void Asteroid::move() {
@@ -71,6 +79,51 @@ void Asteroid::explode() {
 	);
 }
 
+void Asteroid::loadGlowShader() {
+	glowProgram = loadShaders("glowVert.shader", "glowFrag.shader");
+	GLuint glowVBO;
+	glGenBuffers(1, &glowVBO);
+	const float vertices[] = {
+		-1.0, 1.0,
+		1.0, -1.0,
+		-1.0, -1.0,
+		1.0, -1.0,
+		-1.0, 1.0,
+		1.0, 1.0,
+	};
+	glBindBuffer(GL_ARRAY_BUFFER, glowVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glGenVertexArrays(1, &glowVAO);
+	glBindVertexArray(glowVAO);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+}
+
+void Asteroid::renderGlow(mat4 VP) {
+	std::vector<mat4> MVPs;
+	std::vector<vec3> colors;
+	std::vector<float> sizes;
+	std::vector<float> ts;
+	for (auto it = asteroids.begin(); it != nullptr; it = it->next) {
+		Asteroid* a = it->data;
+		ts.push_back(a->timeDead);
+		MVPs.push_back(VP * a->Model);
+		colors.push_back(a->color);
+		sizes.push_back(a->size);
+	}
+	int count = MVPs.size();
+	glUseProgram(glowProgram);
+	glUniformMatrix4fv(glGetUniformLocation(glowProgram, "MVP"), count, GL_FALSE, &MVPs[0][0][0]);
+	glUniform3fv(glGetUniformLocation(glowProgram, "color"), count, &colors[0][0]);
+	glUniform1fv(glGetUniformLocation(glowProgram, "size"), count, &sizes[0]);
+	glUniform1fv(glGetUniformLocation(glowProgram, "t"), count, &ts[0]);
+	glUniform1i(glGetUniformLocation(glowProgram, "count"), count);
+	glBindVertexArray(glowVAO);
+	glDisable(GL_DEPTH_TEST);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glEnable(GL_DEPTH_TEST);
+}
+
 void Asteroid::collide(Asteroid& p) {
 	if (detectCollision(p)) {
 		/*if (size > p.size) {
@@ -81,16 +134,9 @@ void Asteroid::collide(Asteroid& p) {
 			p.explode();
 			asteroids -= this;
 		}*/
-		if (length(vel - p.vel) > 1.0f) {
-			if (size > p.size) {
-				explode();
-			}
-			else {
-				p.explode();
-			}
-		}
-		else {
-			Polygon::collide(p);
-		}
+		float dv = length(p.vel - vel);
+		Polygon::collide(p);
+		p.decrementHP(size * dv * 2.0f);
+		decrementHP(p.size * dv * 2.0f);
 	}
 }

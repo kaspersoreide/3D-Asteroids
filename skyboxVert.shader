@@ -8,7 +8,7 @@ out vec3 theColor;
 uniform mat4 ViewProjection;
 
 void main() {
-	vec4 sp = ViewProjection * vec4(99.1 * pos, 1.0);
+	vec4 sp = ViewProjection * vec4(pos, 1.0);
 	//sp[3] = 0.5;
 	gl_Position = sp;
 	theColor = vec3(1.0, 1.0, 1.0);

@@ -81,7 +81,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 
 int main() {
 	glfwInit();
-	window = glfwCreateWindow(1280, 720, "3D Asteroids", glfwGetPrimaryMonitor(), NULL);
+	window = glfwCreateWindow(1280, 720, "3D Asteroids", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
 	glewExperimental = true; // Needed for core profile
@@ -100,6 +100,7 @@ int main() {
 	Polygon::loadProgram();
 	Player::loadVertexArray();
 	Asteroid::loadVertexArrays();
+	Asteroid::loadGlowShader();
 	Shooter::loadProgram();
 
 	player = new Player();
@@ -138,7 +139,8 @@ int main() {
 	Polygon::setViewProjection(VP);
 	*/
 	Polygon::setViewProjection(Projection * player->getView());
-	//Asteroid::asteroids.push_back(new Asteroid(vec3(0.0, 0.0, 7.0), 5.0f));
+	//Asteroid::asteroids.push_back(new Asteroid(vec3(1.0, 3.0, 7.0), 2.0f));
+	//Asteroid::asteroids.push_back(new Asteroid(vec3(1.0, 7.0, 7.0), 2.0f));
 	while (!glfwWindowShouldClose(window)) {
 		glBindFramebuffer(GL_FRAMEBUFFER, screenFBO);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -150,6 +152,7 @@ int main() {
 		Skybox::setViewProjection(player->getRotation(), Projection);
 		Shooter::setVP(VP);
 		Asteroid::spawn(player->getPos());
+		Asteroid::renderGlow(VP);
 		
 		Skybox::render();
 		for (auto it = Asteroid::asteroids.begin(); it != nullptr; it = it->next) {

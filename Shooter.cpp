@@ -43,6 +43,7 @@ void Shooter::render() {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(pos_vel), pos_vel);
 	glBindVertexArray(VAO);
+	glLineWidth(3.0f);
 	glDrawArrays(GL_POINTS, 0, n);
 }
 

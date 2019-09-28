@@ -12,6 +12,8 @@ public:
 	void cleanup(vec3 playerPos);
 	static void spawn(vec3 playerPos);
 	void render();
+	static void loadGlowShader();
+	static void renderGlow(mat4 VP);
 	void move();
 	void explode();
 	void collide(Polygon& p) { Polygon::collide(p); }
@@ -21,5 +23,5 @@ public:
 private:
 	bool alive;
 	float timeDead;
-	static GLuint VAO;
+	static GLuint VAO, glowProgram, glowVAO;
 };

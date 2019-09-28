@@ -39,5 +39,5 @@ float random(vec3  v) { return floatConstruct(hash(floatBitsToUint(v))); }
 float random(vec4  v) { return floatConstruct(hash(floatBitsToUint(v))); }
 
 void main() {
-	FragColor = vec4(random(p.x), random(p.y), random(p.z), 1.0);
+	FragColor = vec4(1.0, 0.0, 0.0, 1.0);//vec4(random(p.x), random(p.y), random(p.z), 1.0);
 }
