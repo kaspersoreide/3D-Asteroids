@@ -1,7 +1,8 @@
 #include "framebuffer.h"
+#include "loadshaders.h"
 
-GLuint makeFramebufferTexture() {
-	GLuint texture;
+Framebuffer::Framebuffer() {
+	//gen texture
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -11,31 +12,23 @@ GLuint makeFramebufferTexture() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	return texture;
-}
 
-GLuint makeDepthBuffer() {
-	GLuint rbo;
-	glGenRenderbuffers(1, &rbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	//gen depthbuffer
+	glGenRenderbuffers(1, &depthbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthbuffer);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1280, 720);
-	return rbo;
-}
 
-GLuint makeFrameBuffer(GLuint texture, GLuint depthBuffer) {
-	GLuint fbo;
-	glGenFramebuffers(1, &fbo);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	//gen framebuffer object
+	glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
-	return fbo;
-}
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthbuffer);
 
-GLuint makeScreenQuadVAO() {
-	GLuint vbo, vao;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	//gen screen quad VAO
+	GLuint VBO;
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	float data[] = {
 		1.0, -1.0,
 		1.0, 1.0,
@@ -45,8 +38,8 @@ GLuint makeScreenQuadVAO() {
 		-1.0, 1.0,
 	};
 	glBufferData(GL_ARRAY_BUFFER, sizeof(data), &data[0], GL_STATIC_DRAW);
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(
 		0,
@@ -56,13 +49,22 @@ GLuint makeScreenQuadVAO() {
 		2 * sizeof(float),
 		(void*)0
 	);
-	return vao;
+
+	program = loadShaders("screenVert.shader", "screenFrag.shader");
+
+	//unbind the framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void renderTextureToScreen(GLuint vao, GLuint program, GLuint texture) {
-	glBindVertexArray(vao);
+void Framebuffer::renderTextureToScreen() {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glDisable(GL_DEPTH_TEST);
+	glBindVertexArray(VAO);
 	glUseProgram(program);
-	//glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	glEnable(GL_DEPTH_TEST);
 }

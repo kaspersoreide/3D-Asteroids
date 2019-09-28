@@ -105,13 +105,8 @@ int main() {
 
 	player = new Player();
 
-	GLuint screenTexture = makeFramebufferTexture();
-	GLuint screenDepthBuffer = makeDepthBuffer();
-	GLuint screenFBO = makeFrameBuffer(screenTexture, screenDepthBuffer);
-	GLuint screenQuadVAO = makeScreenQuadVAO();
-	GLuint screenProgram = loadShaders("screenVert.shader", "screenFrag.shader");
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	Framebuffer framebuffer;
+	
 	/*
 	for (int i = 0; i < 15; i++) {
 		Asteroid::asteroids.push_back(new Asteroid(
@@ -142,9 +137,7 @@ int main() {
 	//Asteroid::asteroids.push_back(new Asteroid(vec3(1.0, 3.0, 7.0), 2.0f));
 	//Asteroid::asteroids.push_back(new Asteroid(vec3(1.0, 7.0, 7.0), 2.0f));
 	while (!glfwWindowShouldClose(window)) {
-		glBindFramebuffer(GL_FRAMEBUFFER, screenFBO);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
 		mat4 VP = Projection * player->getView();
 		Polygon::setViewProjection(VP);
 		Polygon::setCameraPosition(player->getPos());
@@ -182,10 +175,7 @@ int main() {
 		player->move();
 		player->render();
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glDisable(GL_DEPTH_TEST);
-		renderTextureToScreen(screenQuadVAO, screenProgram, screenTexture);
+		framebuffer.renderTextureToScreen();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
