@@ -73,6 +73,9 @@
     <ClInclude Include="Shooter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="convexhull.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Particles.cpp">
@@ -197,6 +200,9 @@
       <Filter>objects</Filter>
     </Text>
     <Text Include="tetrahedron.txt">
+      <Filter>objects</Filter>
+    </Text>
+    <Text Include="lowpolyship.txt">
       <Filter>objects</Filter>
     </Text>
   </ItemGroup>

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="convexhull.h" />
     <ClInclude Include="framebuffer.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="List.h">
@@ -76,6 +77,7 @@
     <Text Include="greatdodeca.txt" />
     <Text Include="gyroelongated.txt" />
     <Text Include="icosahedron.txt" />
+    <Text Include="lowpolyship.txt" />
     <Text Include="realdonkey.txt" />
     <Text Include="ship.txt" />
     <Text Include="Shrek.txt" />
