@@ -7,12 +7,12 @@ vector<ParticleCluster*> ParticleCluster::particles;
 
 void ParticleCluster::loadPrograms() {
 	renderProgram = loadShaders(
-		"shaders/particleVert.shader",
-		"shaders/particleFrag.shader"
+		"shaders/particles/vert.glsl",
+		"shaders/particles/frag.glsl"
 	);
 	const GLchar* varyings[] = { "outPos1", "outVel1", "outPos2", "outVel2" };
 	transformProgram = loadTFBShader(
-		"shaders/particleTFB.shader",
+		"shaders/particles/tfb.glsl",
 		varyings,
 		4
 	);

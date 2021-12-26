@@ -39,7 +39,7 @@ void main() {
 	float dist = length(gl_FragCoord.xy - mid);
 
 	FragColor = texture(screenTexture, texCoords)
-		+ vec4(texture(screenTexture, texCoords + 0.02 * (texCoords - vec2(0.5))).r, 0.0, 0.0, 1.0)
-		+ vec4(0.0, texture(screenTexture, texCoords - 0.02 * (texCoords - vec2(0.5))).g, 0.0, 1.0)
-		+ vec4(mod(5.2 * texCoords, 0.09), mod(2.3 * texCoords.x, 0.1), 1.0);
+		+ 0.3 * vec4(texture(screenTexture, texCoords + 0.02 * (texCoords - vec2(0.5))).r, 0.0, 0.0, 1.0)
+		+ 0.3 * vec4(0.0, texture(screenTexture, texCoords - 0.02 * (texCoords - vec2(0.5))).g, 0.0, 1.0);
+		//+ vec4(mod(5.2 * texCoords, 0.09), mod(2.3 * texCoords.x, 0.1), 1.0);
 }

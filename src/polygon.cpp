@@ -4,7 +4,7 @@ GLuint Polygon::program;
 
 void Polygon::loadProgram() {
 	//program = loadShaders("polygonVert.shader", "polygonFrag.shader");
-	program = loadGeometryShader("shaders/polygonVert.shader", "shaders/polygonGeom.shader", "shaders/polygonFrag.shader");
+	program = loadShaders("shaders/polygon/vert.glsl", "shaders/polygon/frag.glsl");
 	//program = loadGeometryShader("polygonVert.shader", "polygonGeom.shader", "polygonFrag.shader");
 }
 

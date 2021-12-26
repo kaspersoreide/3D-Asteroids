@@ -4,7 +4,6 @@
 #include "GL/glew.h"
 #include "glm/ext.hpp"
 #include "glm/gtx/matrix_decompose.hpp"
-#include "glm/gtc/quaternion.hpp"
 #include "GLFW/glfw3.h"
 #include <vector>
 #include "glm/gtc/matrix_transform.hpp"
@@ -93,7 +92,7 @@ int main() {
 
 	glfwSetKeyCallback(window, keyCallback);
 
-	RNG::srand(14027);
+	RNG::srand(14127);
 	Skybox::Init();
 	ParticleCluster::loadPrograms();
 	Polygon::loadProgram();
@@ -106,15 +105,6 @@ int main() {
 
 	Framebuffer framebuffer;
 	
-	/*
-	for (int i = 0; i < 15; i++) {
-		Asteroid::asteroids.push_back(new Asteroid(
-			100.0f * RNG::randomvec3() - 50.0f,
-			2.0f + 3.0f * RNG::randomFloat()
-		));
-		Asteroid::asteroids[i]->setSpin(0.008f * RNG::randomvec3() - vec3(0.004f));
-	}
-	*/
 	player->move();
 	
 	mat4 Projection = perspective(
@@ -123,15 +113,7 @@ int main() {
 		0.1f,
 		100.0f
 	);
-	/*
-	mat4 View = lookAt(
-		vec3(-12.0, 0.0, 0.0),
-		vec3(0.0, 0.0, 0.0),
-		vec3(0.0, 1.0, 0.0)
-	);
-	mat4 VP = Projection * View;
-	Polygon::setViewProjection(VP);
-	*/
+    Asteroid::asteroids.push_back(new Asteroid(vec3(0.0f), 4.0f));
 	Polygon::setViewProjection(Projection * player->getView());
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -153,13 +135,15 @@ int main() {
 				for (int j = i + 1; j < Asteroid::asteroids.size(); j++) {
 					Asteroid* a2 = Asteroid::asteroids[j];
 					if (!a2->isAlive()) continue;
-					//it->gravitate(**jt);
+					a1->gravitate(*a2);
+                    a2->gravitate(*a1);
+
 					a2->collide(*a1);
 					//if (Asteroid::asteroids.find(a1) == nullptr) break;
 				}
 				//it->gravitate(player);
 				player->collideShots(*a1);
-				a1->collide(*player);
+				//a1->collide(*player);
 			}
 			a1->move();
 			a1->render();

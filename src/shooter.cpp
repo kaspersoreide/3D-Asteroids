@@ -75,7 +75,7 @@ void Shooter::moveShots() {
 }
 
 void Shooter::loadProgram() { 
-	program = loadGeometryShader("shaders/shotVert.shader", "shaders/shotGeom.shader", "shaders/shotFrag.shader");
+	program = loadGeometryShader("shaders/shot/vert.glsl", "shaders/shot/geom.glsl", "shaders/shot/frag.glsl");
 }
 
 void Shooter::setPosAndDir(vec3 _pos, vec3 _dir) {

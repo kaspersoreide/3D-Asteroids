@@ -50,7 +50,7 @@ Framebuffer::Framebuffer() {
 		(void*)0
 	);
 
-	program = loadShaders("shaders/screenVert.shader", "shaders/screenFrag.shader");
+	program = loadShaders("shaders/screen/vert.glsl", "shaders/screen/frag.glsl");
 
 	//unbind the framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

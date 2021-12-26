@@ -1,4 +1,5 @@
 #include "player.h"
+#include <algorithm>
 GLuint Player::VAO;
 
 void Player::loadVertexArray() {
@@ -8,6 +9,9 @@ void Player::loadVertexArray() {
 Player::Player() : Polygon(vec3(0.0f), 1.0f) {
 	color = vec3(0.0, 1.0, 0.4);
 	shooter = new Shooter();
+    std::fill(rot, rot+5, 0);
+    std::fill(mov, mov+5, 0);
+    shooting = false;
 }
 
 void Player::render() {

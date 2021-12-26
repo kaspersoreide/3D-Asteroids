@@ -27,11 +27,11 @@ Asteroid::Asteroid(Asteroid* parent, vector<vec3>& pts) {
 	VAO = vertexArray2x3f(vertices);
 	Rotation = parent->Rotation;
 	pos = parent->pos + (Rotation * center);
-	size = parent->size / 1.5f;
+	size = parent->size;
 	Scale = parent->Scale;
 	//setSpin(parent->spin);
 	vec3 spinvel = cross(parent->spin, center);
-	vel = spinvel + parent->vel + 0.1f * (Rotation * center);
+	vel = spinvel + parent->vel + 2.0f * (Rotation * center);
 	setSpin(parent->spin - spinvel);
 	alive = true;
 	timeDead = 0.0f;
@@ -74,11 +74,11 @@ void Asteroid::cleanup(vec3 playerPos) {
 void Asteroid::spawn(vec3 playerPos) {
 	if (asteroids.size() < 18) {
 		Asteroid* a = new Asteroid(
-			playerPos + 100.0f * normalize(2.0f * RNG::randomvec3() - 1.0f),
+			playerPos + 50.0f * normalize(2.0f * RNG::randomvec3() - 1.0f),
 			0.5f + 5.0f * RNG::randomFloat()
 		);
 		a->setSpin(RNG::randomvec3() * 0.06f - vec3(0.03f));
-		a->setVel(-0.3f * (normalize(a->pos - playerPos) + RNG::randomvec3() * 0.8f - vec3(0.4f)));
+		//a->setVel(-0.3f * (normalize(a->pos - playerPos) + RNG::randomvec3() * 0.8f - vec3(0.4f)));
 		asteroids.push_back(a);
 	}
 }
@@ -89,7 +89,6 @@ void Asteroid::loadVertexArrays() {
 
 void Asteroid::render() {
 	//Polygon::render(VAO);
-	if (!alive) return;
 	glBindVertexArray(VAO);
 	glUseProgram(program);
 	GLuint l_M = glGetUniformLocation(program, "Model");
@@ -98,13 +97,14 @@ void Asteroid::render() {
 	glUniform3fv(l_c, 1, &color[0]);
 	GLuint l_a = glGetUniformLocation(program, "alive");
 	glUniform1i(l_a, alive);
-	/*
-	if (!alive) {
-		GLuint l_t = glGetUniformLocation(program, "t");
-		glUniform1f(l_t, timeDead);
-		GLuint l_s = glGetUniformLocation(program, "spin");
-		glUniform3fv(l_s, 1, &spin[0]);
-	}*/
+    GLuint l_t = glGetUniformLocation(program, "t");
+	glUniform1f(l_t, timeDead);
+
+	GLuint l_s = glGetUniformLocation(program, "spin");
+    if (!alive) glUniform3fv(l_s, 1, &spin[0]);
+	else {
+        glUniform3f(l_s, 0.0f, 0.0f, 0.0f);
+    }
 	//glDrawArrays(GL_TRIANGLES, 0, 60);
 	GLuint l_o = glGetUniformLocation(program, "outline");
 	glUniform1i(l_o, true);
@@ -119,20 +119,23 @@ void Asteroid::render() {
 void Asteroid::move() {
 	//vel -= 0.001f * pos / dot(pos, pos);
 	if (HP < 0 && alive) explode();
-	Polygon::move();
+	
 	if (!alive) {
 		timeDead += 0.1;
+        pos += vel;
 		if (timeDead > 20.0) asteroids.erase(find(asteroids.begin(), asteroids.end(), this));
-	}
+	} else {
+        Polygon::move();
+    }
 }
 
 void Asteroid::explode() {
 	alive = false;
 	//vel = vec3(0.0f);
 	//Spin = mat3(1.0);
-	if (pointCloud.size() > 20) {
-		split();
-	}
+	//if (pointCloud.size() > 20) {
+	//	split();
+	//}
 	ParticleCluster::particles.push_back(
 		new ParticleCluster(400, pos, color, size)
 	);
@@ -140,7 +143,7 @@ void Asteroid::explode() {
 }
 
 void Asteroid::loadGlowShader() {
-	glowProgram = loadShaders("glowVert.shader", "glowFrag.shader");
+	glowProgram = loadShaders("shaders/glow/vert.glsl", "shaders/glow/frag.glsl");
 	GLuint glowVBO;
 	glGenBuffers(1, &glowVBO);
 	const float vertices[] = {
@@ -222,18 +225,27 @@ void Asteroid::collide(Asteroid& p) {
 
 void Asteroid::split() {
 	vector<vec3> part0, part1;
-	/*
+	//vector<vec3> subparts[2];
+    /*
+	vec3 splitPlaneDir = normalize(RNG::randomvec3() - vec3(0.5f));
 	for (vec3 p : pointCloud) {
 		//splits vertices into 8 by sign bit for x, y, and z
-		uint bitmask = *(uint*)(&p[0]) >> 31;
-		bitmask |= *(uint*)(&p[1]) >> 30 & 2;
-		bitmask |= *(uint*)(&p[2]) >> 29 & 4;
-		subparts[bitmask].push_back(p);
+		//uint bitmask = *(uint*)(&p[0]) >> 31;
+		//bitmask |= *(uint*)(&p[1]) >> 30 & 2;
+		//bitmask |= *(uint*)(&p[2]) >> 29 & 4;
+		//subparts[bitmask].push_back(p);
+        if (dot(p, splitPlaneDir) > 0.0f) {
+            part0.push_back(p);
+        } else {
+            part1.push_back(p);
+        }
 	}
-	for (int i = 0; i < 8; i++) {
-	asteroids.push_back(new Asteroid(this, subparts[i]));
-	}
-	*/
+	//for (int i = 0; i < 8; i++) {
+	asteroids.push_back(new Asteroid(this, part0));
+	asteroids.push_back(new Asteroid(this, part1));
+    */
+	//}
+	
 	//normal vector of random plane through origin
 	vec3 normal = normalize(RNG::randomvec3() - vec3(0.5f));
 	for (vec3 p : pointCloud) {

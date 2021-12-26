@@ -27,7 +27,7 @@ void main() {
 	}
 	else {
 		vec3 lightDir = normalize(rPos - center);
-		vec3 viewDir = normalize(rPos - cPos);
+		vec3 viewDir = -normalize(rPos - cPos);
 		vec3 reflectDir = reflect(lightDir, vNormal);
 		float spec = pow(max(dot(viewDir, reflectDir), 0.0), 8);
 		vec3 specular = spec * pColor;

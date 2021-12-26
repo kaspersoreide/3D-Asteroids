@@ -5,7 +5,7 @@ GLuint Skybox::program, Skybox::VAO, Skybox::VBO;
 int Skybox::N;
 
 void Skybox::Init() {
-	program = loadShaders("shaders/skyboxVert.shader", "shaders/skyboxFrag.shader");
+	program = loadShaders("shaders/skybox/vert.glsl", "shaders/skybox/frag.glsl");
 	N = 1000;
 	std::vector<float> bufferdata;
 	int segmentSize = sizeof(float) * 6;
