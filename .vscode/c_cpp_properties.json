@@ -3,12 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "/usr/lib/glfw/include",
-                "/usr/lib/glew/include",
-                "/usr/lib/glm"
+                "${workspaceFolder}/**"
             ],
-            "defines": [],
+            "defines": ["GLEW_NO_GLU"],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
             "cppStandard": "c++17",

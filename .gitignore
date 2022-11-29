@@ -1,0 +1,6 @@
+application
+Makefile
+cmake_install.cmake
+CMakeCache.txt
+CMakeFiles
+.vscode
